@@ -6,15 +6,15 @@ DSEG	SEGMENT PARA 'DATA'
 CR	EQU 13
 LF	EQU 10
 ISIM    DB CR, LF,'                                                SEMIH ERKEN 19011503',0
-ELEMAN	DB CR, LF,'Kac Elemanli Bir Dizi Girmek Istersiniz : ',0
-DEGER	DB CR, LF, 'Deger Giriniz ', 0
-EKLEME  DB CR, LF, 'Kac Eleman Eklemek Istersiniz : ',0
-MENU1	DB CR, LF, 'Dizi Olusturmak Icin 1 e Basiniz ', 0
-MENU2	DB CR, LF, 'Olusturdugunuz Diziyi ve Linkleri Goruntulemek Icin 2 ye Basiniz ', 0
-MENU3	DB CR, LF, 'Ekleme Yapmak Icin 3 e Basiniz ', 0
-MENU4   DB CR, LF, 'Cikis Icin 4 e Basiniz ', 0
-HATA	DB CR, LF, 'Dikkat !!! Sayi vermediniz yeniden giris yapiniz.!!!  ', 0
-GECERSIZ DB CR, LF, 'Lutfen 1,2,3 ya da 4 Degerlerinden Birini Giriniz ', 0 
+ELEMAN	DB CR, LF,'How Many Elements Would You Enter To Your Array : ',0
+DEGER	DB CR, LF, 'Enter Value ', 0
+EKLEME  DB CR, LF, 'How Many Elements You Want To Add : ',0
+MENU1	DB CR, LF, 'Press 1 to Create an Array ', 0
+MENU2	DB CR, LF, 'Press 2 to View Arrays and Links That You Have Been Created ', 0
+MENU3	DB CR, LF, 'Press 3 to Add Elements ', 0
+MENU4   DB CR, LF, 'Press 4 to Exit ', 0
+HATA	DB CR, LF, 'WARNING , You Did Not Entered Number Try Again  ', 0
+GECERSIZ DB CR, LF, 'Please Enter 1,2,3 or 4 ', 0 
 ALT     DB CR, LF, ' ', 0
 BOSLUK  DB ' ',0
 SECIM   DW 0
@@ -392,8 +392,8 @@ ANA ENDP
     
 GETC	PROC NEAR
         ;------------------------------------------------------------------------
-        ; Klavyeden basýlan karakteri AL yazmacýna alýr ve ekranda gösterir. 
-        ; iþlem sonucunda sadece AL etkilenir. 
+        ; Klavyeden basÄ±lan karakteri AL yazmacÄ±na alÄ±r ve ekranda gÃ¶sterir. 
+        ; iÅŸlem sonucunda sadece AL etkilenir. 
         ;------------------------------------------------------------------------
         MOV AH, 1h
         INT 21H
@@ -402,8 +402,8 @@ GETC	ENDP
 
 PUTC	PROC NEAR
         ;------------------------------------------------------------------------
-        ; AL yazmacýndaki deðeri ekranda gösterir. DL ve AH deðiþiyor. AX ve DX 
-        ; yazmaçlarýnýn deðerleri korumak için PUSH/POP yapýlýr. 
+        ; AL yazmacÄ±ndaki deÄŸeri ekranda gÃ¶sterir. DL ve AH deÄŸiÅŸiyor. AX ve DX 
+        ; yazmaÃ§larÄ±nÄ±n deÄŸerleri korumak iÃ§in PUSH/POP yapÄ±lÄ±r. 
         ;------------------------------------------------------------------------
         PUSH AX
         PUSH DX
@@ -417,53 +417,53 @@ PUTC 	ENDP
 
 GETN 	PROC NEAR
         ;------------------------------------------------------------------------
-        ; Klavyeden basýlan sayiyi okur, sonucu AX yazmacý üzerinden dondurur. 
-        ; DX: sayýnýn iþaretli olup/olmadýðýný belirler. 1 (+), -1 (-) demek 
+        ; Klavyeden basÄ±lan sayiyi okur, sonucu AX yazmacÄ± Ã¼zerinden dondurur. 
+        ; DX: sayÄ±nÄ±n iÅŸaretli olup/olmadÄ±ÄŸÄ±nÄ± belirler. 1 (+), -1 (-) demek 
         ; BL: hane bilgisini tutar 
-        ; CX: okunan sayýnýn islenmesi sýrasýndaki ara deðeri tutar. 
+        ; CX: okunan sayÄ±nÄ±n islenmesi sÄ±rasÄ±ndaki ara deÄŸeri tutar. 
         ; AL: klavyeden okunan karakteri tutar (ASCII)
-        ; AX zaten dönüþ deðeri olarak deðiþmek durumundadýr. Ancak diðer 
-        ; yazmaçlarýn önceki deðerleri korunmalýdýr. 
+        ; AX zaten dÃ¶nÃ¼ÅŸ deÄŸeri olarak deÄŸiÅŸmek durumundadÄ±r. Ancak diÄŸer 
+        ; yazmaÃ§larÄ±n Ã¶nceki deÄŸerleri korunmalÄ±dÄ±r. 
         ;------------------------------------------------------------------------
         PUSH BX
         PUSH CX
         PUSH DX
 GETN_START:
-        MOV DX, 1	                        ; sayýnýn þimdilik + olduðunu varsayalým 
-        XOR BX, BX 	                        ; okuma yapmadý Hane 0 olur. 
-        XOR CX,CX	                        ; ara toplam deðeri de 0’dýr. 
+        MOV DX, 1	                        ; sayÄ±nÄ±n ÅŸimdilik + olduÄŸunu varsayalÄ±m 
+        XOR BX, BX 	                        ; okuma yapmadÄ± Hane 0 olur. 
+        XOR CX,CX	                        ; ara toplam deÄŸeri de 0Â’dÄ±r. 
 NEW:
-        CALL GETC	                        ; klavyeden ilk deðeri AL’ye oku. 
+        CALL GETC	                        ; klavyeden ilk deÄŸeri ALÂ’ye oku. 
         CMP AL,CR 
-        JE FIN_READ	                        ; Enter tuþuna basilmiþ ise okuma biter
+        JE FIN_READ	                        ; Enter tuÅŸuna basilmiÅŸ ise okuma biter
         CMP  AL, '-'	                        ; AL ,'-' mi geldi ? 
-        JNE  CTRL_NUM	                        ; gelen 0-9 arasýnda bir sayý mý?
+        JNE  CTRL_NUM	                        ; gelen 0-9 arasÄ±nda bir sayÄ± mÄ±?
 NEGATIVE:
-        MOV DX, -1	                        ; - basýldý ise sayý negatif, DX=-1 olur
+        MOV DX, -1	                        ; - basÄ±ldÄ± ise sayÄ± negatif, DX=-1 olur
         JMP NEW
         
         		                        ; yeni haneyi al
 CTRL_NUM:
-        CMP AL, '0'	                        ; sayýnýn 0-9 arasýnda olduðunu kontrol et.
+        CMP AL, '0'	                        ; sayÄ±nÄ±n 0-9 arasÄ±nda olduÄŸunu kontrol et.
         JB error 
         CMP AL, '9'
-        JA error		                ; deðil ise HATA mesajý verilecek
-        SUB AL,'0'	                        ; rakam alýndý, haneyi toplama dâhil et 
-        MOV BL, AL	                        ; BL’ye okunan haneyi koy 
-        MOV AX, 10 	                        ; Haneyi eklerken *10 yapýlacak 
-        PUSH DX		                        ; MUL komutu DX’i bozar iþaret için saklanmalý
+        JA error		                ; deÄŸil ise HATA mesajÄ± verilecek
+        SUB AL,'0'	                        ; rakam alÄ±ndÄ±, haneyi toplama dÃ¢hil et 
+        MOV BL, AL	                        ; BLÂ’ye okunan haneyi koy 
+        MOV AX, 10 	                        ; Haneyi eklerken *10 yapÄ±lacak 
+        PUSH DX		                        ; MUL komutu DXÂ’i bozar iÅŸaret iÃ§in saklanmalÄ±
         MUL CX		                        ; DX:AX = AX * CX
-        POP DX		                        ; iþareti geri al 
-        MOV CX, AX	                        ; CX deki ara deðer *10 yapýldý 
-        ADD CX, BX 	                        ; okunan haneyi ara deðere ekle 
-        JMP NEW 		                ; klavyeden yeni basýlan deðeri al 
+        POP DX		                        ; iÅŸareti geri al 
+        MOV CX, AX	                        ; CX deki ara deÄŸer *10 yapÄ±ldÄ± 
+        ADD CX, BX 	                        ; okunan haneyi ara deÄŸere ekle 
+        JMP NEW 		                ; klavyeden yeni basÄ±lan deÄŸeri al 
 ERROR:
         MOV AX, OFFSET HATA 
-        CALL PUT_STR	                        ; HATA mesajýný göster 
-        JMP GETN_START                          ; o ana kadar okunanlarý unut yeniden sayý almaya baþla 
+        CALL PUT_STR	                        ; HATA mesajÄ±nÄ± gÃ¶ster 
+        JMP GETN_START                          ; o ana kadar okunanlarÄ± unut yeniden sayÄ± almaya baÅŸla 
 FIN_READ:
-        MOV AX, CX	                        ; sonuç AX üzerinden dönecek 
-        CMP DX, 1	                        ; Ýþarete göre sayýyý ayarlamak lazým 
+        MOV AX, CX	                        ; sonuÃ§ AX Ã¼zerinden dÃ¶necek 
+        CMP DX, 1	                        ; Ä°ÅŸarete gÃ¶re sayÄ±yÄ± ayarlamak lazÄ±m 
         JE FIN_GETN
         NEG AX		                        ; AX = -AX
 FIN_GETN:
@@ -475,42 +475,42 @@ GETN 	ENDP
 
 PUTN 	PROC NEAR
         ;------------------------------------------------------------------------
-        ; AX de bulunan sayiyi onluk tabanda hane hane yazdýrýr. 
-        ; CX: haneleri 10’a bölerek bulacaðýz, CX=10 olacak
-        ; DX: 32 bölmede iþleme dâhil olacak. Soncu etkilemesin diye 0 olmalý 
+        ; AX de bulunan sayiyi onluk tabanda hane hane yazdÄ±rÄ±r. 
+        ; CX: haneleri 10Â’a bÃ¶lerek bulacaÄŸÄ±z, CX=10 olacak
+        ; DX: 32 bÃ¶lmede iÅŸleme dÃ¢hil olacak. Soncu etkilemesin diye 0 olmalÄ± 
         ;------------------------------------------------------------------------
         PUSH CX
         PUSH DX 	
-        XOR DX,	DX 	                        ; DX 32 bit bölmede soncu etkilemesin diye 0 olmalý 
-        PUSH DX		                        ; haneleri ASCII karakter olarak yýðýnda saklayacaðýz.
-                                                ; Kaç haneyi alacaðýmýzý bilmediðimiz için yýðýna 0 
-                                                ; deðeri koyup onu alana kadar devam edelim.
+        XOR DX,	DX 	                        ; DX 32 bit bÃ¶lmede soncu etkilemesin diye 0 olmalÄ± 
+        PUSH DX		                        ; haneleri ASCII karakter olarak yÄ±ÄŸÄ±nda saklayacaÄŸÄ±z.
+                                                ; KaÃ§ haneyi alacaÄŸÄ±mÄ±zÄ± bilmediÄŸimiz iÃ§in yÄ±ÄŸÄ±na 0 
+                                                ; deÄŸeri koyup onu alana kadar devam edelim.
         MOV CX, 10	                        ; CX = 10
         CMP AX, 0
         JGE CALC_DIGITS	
-        NEG AX 		                        ; sayý negatif ise AX pozitif yapýlýr. 
+        NEG AX 		                        ; sayÄ± negatif ise AX pozitif yapÄ±lÄ±r. 
         PUSH AX		                        ; AX sakla 
-        MOV AL, '-'	                        ; iþareti ekrana yazdýr. 
+        MOV AL, '-'	                        ; iÅŸareti ekrana yazdÄ±r. 
         CALL PUTC
-        POP AX		                        ; AX’i geri al 
+        POP AX		                        ; AXÂ’i geri al 
         
 CALC_DIGITS:
-        DIV CX  		                ; DX:AX = AX/CX  AX = bölüm DX = kalan 
-        ADD DX, '0'	                        ; kalan deðerini ASCII olarak bul 
-        PUSH DX		                        ; yýðýna sakla 
+        DIV CX  		                ; DX:AX = AX/CX  AX = bÃ¶lÃ¼m DX = kalan 
+        ADD DX, '0'	                        ; kalan deÄŸerini ASCII olarak bul 
+        PUSH DX		                        ; yÄ±ÄŸÄ±na sakla 
         XOR DX,DX	                        ; DX = 0
-        CMP AX, 0	                        ; bölen 0 kaldý ise sayýnýn iþlenmesi bitti demek
-        JNE CALC_DIGITS	                        ; iþlemi tekrarla 
+        CMP AX, 0	                        ; bÃ¶len 0 kaldÄ± ise sayÄ±nÄ±n iÅŸlenmesi bitti demek
+        JNE CALC_DIGITS	                        ; iÅŸlemi tekrarla 
         
 DISP_LOOP:
-                                                ; yazýlacak tüm haneler yýðýnda. En anlamlý hane üstte 
-                                                ; en az anlamlý hane en alta ve onu altýnda da 
-                                                ; sona vardýðýmýzý anlamak için konan 0 deðeri var. 
-        POP AX		                        ; sýrayla deðerleri yýðýndan alalým
+                                                ; yazÄ±lacak tÃ¼m haneler yÄ±ÄŸÄ±nda. En anlamlÄ± hane Ã¼stte 
+                                                ; en az anlamlÄ± hane en alta ve onu altÄ±nda da 
+                                                ; sona vardÄ±ÄŸÄ±mÄ±zÄ± anlamak iÃ§in konan 0 deÄŸeri var. 
+        POP AX		                        ; sÄ±rayla deÄŸerleri yÄ±ÄŸÄ±ndan alalÄ±m
         CMP AX, 0 	                        ; AX=0 olursa sona geldik demek 
         JE END_DISP_LOOP 
-        CALL PUTC 	                        ; AL deki ASCII deðeri yaz
-        JMP DISP_LOOP                          ; iþleme devam
+        CALL PUTC 	                        ; AL deki ASCII deÄŸeri yaz
+        JMP DISP_LOOP                          ; iÅŸleme devam
         
 END_DISP_LOOP:
         POP DX 
@@ -520,19 +520,19 @@ PUTN 	ENDP
 
 PUT_STR	PROC NEAR
         ;------------------------------------------------------------------------
-        ; AX de adresi verilen sonunda 0 olan dizgeyi karakter karakter yazdýrýr.
-        ; BX dizgeye indis olarak kullanýlýr. Önceki deðeri saklanmalýdýr. 
+        ; AX de adresi verilen sonunda 0 olan dizgeyi karakter karakter yazdÄ±rÄ±r.
+        ; BX dizgeye indis olarak kullanÄ±lÄ±r. Ã–nceki deÄŸeri saklanmalÄ±dÄ±r. 
         ;------------------------------------------------------------------------
 	PUSH BX 
-        MOV BX,	AX			        ; Adresi BX’e al 
-        MOV AL, BYTE PTR [BX]	                ; AL’de ilk karakter var 
+        MOV BX,	AX			        ; Adresi BXÂ’e al 
+        MOV AL, BYTE PTR [BX]	                ; ALÂ’de ilk karakter var 
 PUT_LOOP:   
         CMP AL,0		
         JE  PUT_FIN 			        ; 0 geldi ise dizge sona erdi demek
-        CALL PUTC 			        ; AL’deki karakteri ekrana yazar
-        INC BX 				        ; bir sonraki karaktere geç
+        CALL PUTC 			        ; ALÂ’deki karakteri ekrana yazar
+        INC BX 				        ; bir sonraki karaktere geÃ§
         MOV AL, BYTE PTR [BX]
-        JMP PUT_LOOP			        ; yazdýrmaya devam 
+        JMP PUT_LOOP			        ; yazdÄ±rmaya devam 
 PUT_FIN:
 	POP BX
 	RET 
